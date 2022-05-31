@@ -11,7 +11,7 @@ URL='https://www.worldometers.info/coronavirus/#countries'
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36'
 }
-with open ('/home/nitin/Desktop/PROJECT/BOT/Data/countries_covid_data.csv','w',newline = '') as csvfile:
+with open ('/home/nitin/Desktop/PROJECT/Telegram-Bot/Data/countries_covid_data.csv','w',newline = '') as csvfile:
         my_writer = csv.writer(csvfile)
         header=(['Country','Total Cases','New Cases','Total Deaths','New Deaths','Total Recovered','New Recovered','Active Cases'])
         my_writer.writerow(header)
@@ -38,8 +38,8 @@ with open ('/home/nitin/Desktop/PROJECT/BOT/Data/countries_covid_data.csv','w',n
         getDetails(URL.format())
 
 
-covid_data=pd.read_csv("/home/nitin/Desktop/PROJECT/BOT/Data/countries_covid_data.csv")
-country_name = pd.read_csv("/home/nitin/Desktop/PROJECT/BOT/Data/countries.csv")
+covid_data=pd.read_csv("/home/nitin/Desktop/PROJECT/Telegram-Bot/Data/countries_covid_data.csv")
+country_name = pd.read_csv("/home/nitin/Desktop/PROJECT/Telegram-Bot/Data/countries.csv")
 countries=country_name['Country'].tolist()
 
 

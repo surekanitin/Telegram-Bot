@@ -8,7 +8,7 @@ URL = 'https://finance.yahoo.com/screener/unsaved/9e57e73d-fea7-48f8-b898-129f5b
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36'
 }
-with open ('/home/nitin/Desktop/PROJECT/BOT/Symbols.csv','w',newline = '') as csvfile:
+with open ('/home/nitin/Desktop/PROJECT/Telegram-Bot/Symbols.csv','w',newline = '') as csvfile:
         my_writer = csv.writer(csvfile)
         header=(['Symbol','Name'])
         my_writer.writerow(header)
