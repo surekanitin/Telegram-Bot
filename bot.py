@@ -6,7 +6,7 @@ from Utils.covid_data_fetch import covid
 from Utils.stock import stock
 from Utils.cmd import start,echo,dogImage,unknown
 from Utils.weather import weather
-from Data.tokens import telegram_token
+from Data.my_keys import telegram_token
 # lOG
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.INFO)
 

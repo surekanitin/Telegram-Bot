@@ -1,2 +1,0 @@
-owm_api_key = "c1e8bfbc1e802cd9ef2e31f0309d3499"
-telegram_token='5370403379:AAGB13gSGBvGKMQk7o_CUwMWxUKpOUxtIUo'
