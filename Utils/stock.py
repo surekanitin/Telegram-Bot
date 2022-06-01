@@ -13,6 +13,16 @@ def stock(update:Update,context:CallbackContext):
         price.append(round(col,2))
     prev_close=daily['Close']
     percentage_change=prev_close.pct_change()*100
-    result=f'Real Time Share Price of {symbol}\nTime : {intra.index[-1]} HRS\nOpen : {price[0]}\nHigh : {price[1]}\nLow : {price[2]}\nClose : {price[3]}\nAdj Close : {price[4]}\nVolume : {price[5]}\nChange : {round(percentage_change[-1],2)} %'
+    result=f'''
+Real Time Share Price of {symbol}
+Time : {intra.index[-1]} HRS
+Open : {price[0]}
+High : {price[1]}
+Low : {price[2]}
+Close : {price[3]}
+Adj Close : {price[4]}
+Volume : {price[5]}
+Change : {round(percentage_change[-1],2)} %
+    '''
     context.bot.send_chat_action(update.effective_chat.id,'typing')
     context.bot.send_message(update.effective_chat.id,result)

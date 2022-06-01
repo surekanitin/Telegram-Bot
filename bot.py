@@ -5,7 +5,7 @@ import logging
 from Utils.covid_data_fetch import covid
 from Utils.stock import stock
 from Utils.cmd import start,echo,dogImage,unknown
-from Utils.weather import weather
+from Utils.owm import weatherbycity
 from Data.my_keys import telegram_token
 # lOG
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.INFO)
@@ -19,7 +19,7 @@ def main():
     dp.add_handler(CommandHandler('dog',dogImage))
     dp.add_handler(CommandHandler("covid",covid)) 
     dp.add_handler(CommandHandler("Stock",stock))
-    dp.add_handler(CommandHandler("weather",weather))
+    dp.add_handler(CommandHandler("weather",weatherbycity))
     dp.add_handler(MessageHandler(Filters.text & (~Filters.command),echo))  
     dp.add_handler(MessageHandler(Filters.command, unknown))                          
     updater.start_polling()
@@ -28,3 +28,4 @@ def main():
 #calling main
 if __name__ == '__main__':
     main()   
+    
