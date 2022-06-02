@@ -74,15 +74,15 @@ def covid(update:Update,context:CallbackContext):
         for col in data.iloc[-1]:
             detail.append(col)
         cases=f'''
-    📌Country :{detail[0]}
-    📌Total Cases :{detail[1]}
-    📌New Cases :{detail[2]}
-    📌Total Deaths :{detail[3]}
-    📌New Deaths :{detail[4]}
-    📌Total Recovered :{detail[5]}
-    📌New Recovered :{detail[6]}
-    📌Active Cases :{detail[7]
-    }'''
+📌Country :{detail[0]}
+📌Total Cases :{detail[1]}
+📌New Cases :{detail[2]}
+📌Total Deaths :{detail[3]}
+📌New Deaths :{detail[4]}
+📌Total Recovered :{detail[5]}
+📌New Recovered :{detail[6]}
+📌Active Cases :{detail[7]}
+    '''
         context.bot.send_chat_action(update.effective_chat.id,'typing')
         context.bot.send_message(update.effective_chat.id,cases)
     else:

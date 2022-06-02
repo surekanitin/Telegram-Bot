@@ -25,6 +25,11 @@ def location(city_name):
     lon=city_cord.lon
     return lat,lon
 
+def dir(angle):
+    directions = ['↑ N', '↗ NE', '→ E', '↘ SE', '↓ S', '↙ SW', '← W', '↖ NW']
+    return directions[round(angle / 45) % 8]
+
+
 #location_by_cord = mgr1.reverse_geocode(lat, lon) 
 
 def current(lat,lon):
@@ -40,7 +45,7 @@ Time : {localtime}
 Temperature : {round(temp['temp'])}{cel} C
 Feels_Like : {round(temp['feels_like'])}{cel} C
 Dew Point : {round(oc.dewpoint)-273}{cel} C
-Wind_Speed : {round(wind['speed'])} km/h
+Wind_Speed : {dir(wind['deg'])}{ round(wind['speed'])} km/h
 Humidity : {oc.humidity} %
 Pressure : {oc.pressure['press']} mb
 Clouds : {oc.clouds} %
