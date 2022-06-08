@@ -89,7 +89,7 @@ def covid_result(update:Update,context:CallbackContext):
     country=' '.join(map(str,context.args))
     if country == '':
         context.bot.send_chat_action(update.effective_chat.id,'typing')
-        context.bot.send_message(update.effective_chat.id,text="Please type the country name like /covid India.\n")
+        context.bot.send_message(update.effective_chat.id,text="Please type the country name like \"/covid India\".\n")
     else:
         context.bot.send_chat_action(update.effective_chat.id,'typing')
         context.bot.send_message(update.effective_chat.id,text="Displaying Results for "+country)

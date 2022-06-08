@@ -2,10 +2,10 @@
 from telegram.ext import Updater,InlineQueryHandler,CommandHandler,CallbackContext,MessageHandler,Filters
 import logging
 from telegram import InlineQueryResult,InputTextMessageContent,Update,InlineQueryResultArticle
-from Utils.covid_data_fetch import covid,covid_result
+from Utils.covid import covid,covid_result
 from Utils.stock import stock,stock_result
 from Utils.cmd import start,echo,dogImage,unknown
-from Utils.owm import weather,weather_result
+from Utils.weather import weather,weather_result
 from Data.my_keys import telegram_token
 from uuid import uuid4
 # lOG

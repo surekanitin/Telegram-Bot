@@ -98,7 +98,7 @@ def weather_result(update:Update,context:CallbackContext):
     city=' '.join(map(str,context.args))
     if city == '':
         context.bot.send_chat_action(update.effective_chat.id,'typing')
-        context.bot.send_message(update.effective_chat.id,text="Please type the city name like /weather Pondicherry.\n")
+        context.bot.send_message(update.effective_chat.id,text="Please type the city name like \"/weather Pondicherry\".\n")
     else:
         context.bot.send_chat_action(update.effective_chat.id,'typing')
         context.bot.send_message(update.effective_chat.id,text="Displaying Results for "+city)

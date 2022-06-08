@@ -30,7 +30,7 @@ def stock_result(update:Update,context:CallbackContext):
     symbol=' '.join(map(str, context.args))
     if symbol == '':
         context.bot.send_chat_action(update.effective_chat.id,'typing')
-        context.bot.send_message(update.effective_chat.id,text="Please type the stock symbol like /stock TCS.NS.\n")
+        context.bot.send_message(update.effective_chat.id,text="Please type the stock symbol like \"/stock TCS.NS\".\n")
     else:
         context.bot.send_chat_action(update.effective_chat.id,'typing')
         context.bot.send_message(update.effective_chat.id,text="Displaying Results for "+symbol)
