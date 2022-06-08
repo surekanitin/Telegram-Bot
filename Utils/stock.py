@@ -2,10 +2,8 @@ from telegram import Update
 from telegram.ext import CallbackContext
 import yfinance as yf
 
-#stock real-time price
-def stock(update:Update,context:CallbackContext):
-    context.bot.send_chat_action(update.effective_chat.id, 'typing')
-    symbol=' '.join(map(str, context.args))
+
+def stock(symbol):
     intra = yf.download(tickers=symbol, period='1d', interval='5m')
     daily = yf.download(tickers=symbol, period='2d', interval='1d')
     price=[]
@@ -24,5 +22,18 @@ Adj Close : {price[4]}
 Volume : {price[5]}
 Change : {round(percentage_change[-1],2)} %
     '''
-    context.bot.send_chat_action(update.effective_chat.id,'typing')
-    context.bot.send_message(update.effective_chat.id,result)
+    return result
+    
+#stock real-time price
+def stock_result(update:Update,context:CallbackContext):
+    context.bot.send_chat_action(update.effective_chat.id, 'typing')
+    symbol=' '.join(map(str, context.args))
+    if symbol == '':
+        context.bot.send_chat_action(update.effective_chat.id,'typing')
+        context.bot.send_message(update.effective_chat.id,text="Please type the stock symbol like /stock TCS.NS.\n")
+    else:
+        context.bot.send_chat_action(update.effective_chat.id,'typing')
+        context.bot.send_message(update.effective_chat.id,text="Displaying Results for "+symbol)
+        data=stock(symbol)
+        context.bot.send_chat_action(update.effective_chat.id,'typing')
+        context.bot.send_message(update.effective_chat.id,data)

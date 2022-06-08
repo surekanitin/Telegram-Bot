@@ -1,4 +1,3 @@
-from turtle import clear
 from bs4 import BeautifulSoup
 import requests
 import csv

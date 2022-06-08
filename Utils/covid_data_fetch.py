@@ -33,7 +33,6 @@ with open ('/home/nitin/Desktop/PROJECT/Telegram-Bot/Data/countries_covid_data.c
                 acases = row.find_all("td")[8].text.strip()
                 input=([country,tcases,ncases,tdeaths,ndeaths,trecover,nrecover,acases])
                 my_writer.writerow(input)
-                #print("Symbol:", symbol, "Name:", name)
         
         getDetails(URL.format())
 
@@ -59,11 +58,9 @@ def check_country(country):
         return country, True
 
 #for getting covid updates
-def covid(update:Update,context:CallbackContext):    
+def covid(country):
     detail=[]
     data=[]
-    context.bot.send_chat_action(update.effective_chat.id, 'typing')
-    country=' '.join(map(str,context.args))
     if country in ('usa','uae','uk','Uk','Usa','Uae','USA','UK','UAE'):
         country=country.upper()
     else:
@@ -73,7 +70,7 @@ def covid(update:Update,context:CallbackContext):
         data=covid_data.loc[covid_data['Country']==country]
         for col in data.iloc[-1]:
             detail.append(col)
-        cases=f'''
+        case=f'''
 📌Country :{detail[0]}
 📌Total Cases :{detail[1]}
 📌New Cases :{detail[2]}
@@ -83,21 +80,23 @@ def covid(update:Update,context:CallbackContext):
 📌New Recovered :{detail[6]}
 📌Active Cases :{detail[7]}
     '''
-        context.bot.send_chat_action(update.effective_chat.id,'typing')
-        context.bot.send_message(update.effective_chat.id,cases)
     else:
         case=f'Did you mean {result}'
-        context.bot.send_chat_action(update.effective_chat.id,'typing')
-        context.bot.send_message(update.effective_chat.id,case)
+    return case
 
-    
-# print("Enter the name of the country: ", end="")
-# country=input()
-# result,res=check_country(country)
-# print(result)
-# if res==True:
-#     data=covid_data.loc[covid_data['Country']==country]
-#     print(data['Country'])
+def covid_result(update:Update,context:CallbackContext):    
+    context.bot.send_chat_action(update.effective_chat.id, 'typing')
+    country=' '.join(map(str,context.args))
+    if country == '':
+        context.bot.send_chat_action(update.effective_chat.id,'typing')
+        context.bot.send_message(update.effective_chat.id,text="Please type the country name like /covid India.\n")
+    else:
+        context.bot.send_chat_action(update.effective_chat.id,'typing')
+        context.bot.send_message(update.effective_chat.id,text="Displaying Results for "+country)
+        ans=covid(country)
+        context.bot.send_chat_action(update.effective_chat.id,'typing')
+        context.bot.send_message(update.effective_chat.id,ans)
+
     
 
 
