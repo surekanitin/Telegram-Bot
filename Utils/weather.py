@@ -102,9 +102,13 @@ def weather_result(update:Update,context:CallbackContext):
     else:
         context.bot.send_chat_action(update.effective_chat.id,'typing')
         context.bot.send_message(update.effective_chat.id,text="Displaying Results for "+city)
-        result_weather=weather(city)
-        context.bot.send_chat_action(update.effective_chat.id,'typing')
-        context.bot.send_message(update.effective_chat.id,result_weather)
+        try:
+            result_weather=weather(city)
+            context.bot.send_chat_action(update.effective_chat.id,'typing')
+            context.bot.send_message(update.effective_chat.id,result_weather)
+        except:
+            context.bot.send_chat_action(update.effective_chat.id,'typing')
+            context.bot.send_message(update.effective_chat.id,text="City does not exist!!")
  
     # location_keyboard=KeyboardButton(text="Give Location",request_location=True)
     # city_keyboard=KeyboardButton(text="Type City Name")

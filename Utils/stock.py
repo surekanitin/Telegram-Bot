@@ -24,6 +24,7 @@ Change : {round(percentage_change[-1],2)} %
     '''
     return result
     
+
 #stock real-time price
 def stock_result(update:Update,context:CallbackContext):
     context.bot.send_chat_action(update.effective_chat.id, 'typing')
@@ -34,6 +35,11 @@ def stock_result(update:Update,context:CallbackContext):
     else:
         context.bot.send_chat_action(update.effective_chat.id,'typing')
         context.bot.send_message(update.effective_chat.id,text="Displaying Results for "+symbol)
-        data=stock(symbol)
-        context.bot.send_chat_action(update.effective_chat.id,'typing')
-        context.bot.send_message(update.effective_chat.id,data)
+        try:
+            data=stock(symbol)
+            context.bot.send_chat_action(update.effective_chat.id,'typing')
+            context.bot.send_message(update.effective_chat.id,data)
+        except:
+            context.bot.send_chat_action(update.effective_chat.id,'typing')
+            context.bot.send_message(update.effective_chat.id,text="Symbol does not exist!!")
+        

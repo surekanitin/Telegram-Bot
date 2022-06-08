@@ -93,9 +93,13 @@ def covid_result(update:Update,context:CallbackContext):
     else:
         context.bot.send_chat_action(update.effective_chat.id,'typing')
         context.bot.send_message(update.effective_chat.id,text="Displaying Results for "+country)
-        ans=covid(country)
-        context.bot.send_chat_action(update.effective_chat.id,'typing')
-        context.bot.send_message(update.effective_chat.id,ans)
+        try:
+            ans=covid(country)
+            context.bot.send_chat_action(update.effective_chat.id,'typing')
+            context.bot.send_message(update.effective_chat.id,ans)
+        except:
+            context.bot.send_chat_action(update.effective_chat.id,'typing')
+            context.bot.send_message(update.effective_chat.id,text="Country does not exist!!")
 
     
 
