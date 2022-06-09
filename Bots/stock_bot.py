@@ -1,10 +1,11 @@
 #import libraries
 from telegram.ext import Updater,InlineQueryHandler,CommandHandler,CallbackContext,MessageHandler,Filters
-import logging
+import logging,sys,os
+sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../Utils")
+sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../Data")
+import cmd,stock
+import my_keys
 from telegram import InputTextMessageContent,Update,InlineQueryResultArticle
-from Utils.stock import stock,stock_result
-from Utils.cmd import echo,unknown
-from Data.my_keys import realtimestockbot_token
 from uuid import uuid4
 # lOG
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.INFO)
@@ -21,20 +22,20 @@ def inline_stock(update:Update,context:CallbackContext):
     options.append(
             InlineQueryResultArticle(
                 id=uuid4(),
-                title="Stock Updates",
+                title="Stock",
                 description="Real Time Stock Updates",
                 input_message_content=InputTextMessageContent(stock(symbol))))
     update.inline_query.answer(options)
 
 def main():
     #add token
-    updater=Updater(realtimestockbot_token,use_context=True)
+    updater=Updater(my_keys.realtimestockbot_token,use_context=True)
     dp=updater.dispatcher.add_handler
     dp(CommandHandler("start",start)) 
-    dp(CommandHandler("stock",stock_result)) 
+    dp(CommandHandler("stock",stock.stock_result)) 
     dp(InlineQueryHandler(inline_stock))
-    dp(MessageHandler(Filters.text & (~Filters.command),echo))  
-    dp(MessageHandler(Filters.command, unknown))                          
+    dp(MessageHandler(Filters.text & (~Filters.command),cmd.echo))  
+    dp(MessageHandler(Filters.command, cmd.unknown))                          
     updater.start_polling()
     updater.idle()
 

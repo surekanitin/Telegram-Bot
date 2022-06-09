@@ -1,8 +1,9 @@
 from pyowm.owm import OWM
-from sympy import Q
-from Data.my_keys import owm_api_key
-from telegram import  Update,KeyboardButton
-from telegram.ext import CallbackContext,InlineQueryHandler
+import sys,os
+sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../Data")
+from Data import my_keys
+from telegram import  Update
+from telegram.ext import CallbackContext
 import pytz, dateutil.parser as dp
 
 
@@ -27,7 +28,7 @@ emojis ={
     "Torando" : u'\U0001F32A',
     }
 
-owm = OWM(owm_api_key)
+owm = OWM(my_keys.owm_api_key)
 
 
 def location(city_name):
@@ -110,14 +111,3 @@ def weather_result(update:Update,context:CallbackContext):
             context.bot.send_chat_action(update.effective_chat.id,'typing')
             context.bot.send_message(update.effective_chat.id,text="City does not exist!!")
  
-    # location_keyboard=KeyboardButton(text="Give Location",request_location=True)
-    # city_keyboard=KeyboardButton(text="Type City Name")
-    # custom_keyboard=[[location_keyboard,city_keyboard]]
-    # reply_markup=ReplyKeyboardMarkup(custom_keyboard)
-    # context.bot.send_message(update.effective_chat.id,text="Please give location coordinates or city name",reply_markup=reply_markup)
-    # options = []
-    # options.append(KeyboardButton(text='Location',request_Location=True))
-    # options.append(KeyboardButton(text='Name'))
-    # reply_markup = KeyboardMarkup([options])
-    # context.bot.send_message(update.effective_chat.id, text='Select anyone input method', reply_markup=reply_markup)
-    
