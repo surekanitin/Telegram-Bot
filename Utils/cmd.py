@@ -6,7 +6,7 @@ import requests
 def start(update:Update,context:CallbackContext):
     context.bot.send_chat_action(update.effective_chat.id, 'typing')
     update.message.reply_text(f'Hello {update.effective_user.first_name}') 
-    context.bot.send_message(chat_id=update.effective_chat.id,text="I'm a bot,please talk to me!,\nHow to use the commands?\n/dog to get random images of dog\n/covid \"India\" to get the covid Updates,\n/stock \"RELIANCE.NS\" to get real-time stock price.\n/weather \"Chenai\" to get real-time weather updates.")  
+    context.bot.send_message(chat_id=update.effective_chat.id,text="I'm a bot,please talk to me!,\nHow to use the commands?\n/dog to get random images of dog\n/covid \"India\" to get the covid Updates,\n/stock \"RELIANCE.NS\" to get real-time stock price.\n/weather \"Pondicherry\" to get real-time weather updates.")  
 
 def getImage():
     contents=requests.get('https://random.dog/woof.json').json()
