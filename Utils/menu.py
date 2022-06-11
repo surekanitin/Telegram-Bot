@@ -1,6 +1,7 @@
-from telegram import Update
+from telegram import Update,InlineQueryResultArticle,InputTextMessageContent
 from telegram.ext import CallbackContext
-import requests
+import requests,logging
+from uuid import uuid4
 
 #sending start message
 def start(update:Update,context:CallbackContext):
@@ -26,3 +27,21 @@ def echo(update:Update,context:CallbackContext):
 #for handling unkown commands
 def unknown(update: Update, context: CallbackContext):
      context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I didn't understand that command.")
+
+def inline_pu(update:Update,context:CallbackContext):
+    options= list()
+    msg='''
+    My Inline Bots
+    @pu_project_bot - Main bot 
+    @realtimecovidbot - For Inline Covid Updates
+    @realtimestockbot - For Inline Stock Updates
+    @weatherrealtimebot - For Inline Weather Updates'''
+    user_input = update.inline_query.query
+    logging.info('Query received: %s', user_input)
+    options.append(
+        InlineQueryResultArticle(
+            id=uuid4(),
+            title="PU BOTS",
+            description="List of my Bots",
+            input_message_content=InputTextMessageContent(msg)))
+    update.inline_query.answer(options,switch_pm_text='Switch to PM Mode',switch_pm_parameter='Start')

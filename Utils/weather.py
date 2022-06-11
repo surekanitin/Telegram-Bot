@@ -1,7 +1,7 @@
 from pyowm.owm import OWM
 import sys,os
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../Data")
-from Data import my_keys
+import my_keys
 from telegram import  Update
 from telegram.ext import CallbackContext
 import pytz, dateutil.parser as dp

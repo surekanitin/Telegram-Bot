@@ -3,7 +3,7 @@ import logging,sys,os
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../Utils")
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../Data")
 from telegram import InputTextMessageContent,Update,InlineQueryResultArticle
-import cmd,covid
+import menu,covid
 import my_keys
 from uuid import uuid4
 # lOG
@@ -23,8 +23,8 @@ def inline_covid(update:Update,context:CallbackContext):
             id=uuid4(),
             title="Covid",
             description="Real Time Covid Updates",
-            input_message_content=InputTextMessageContent(covid(user_input))))
-    update.inline_query.answer(options)
+            input_message_content=InputTextMessageContent(covid.covid(user_input))))
+    update.inline_query.answer(options,switch_pm_text='Switch to PM mode',switch_pm_parameter='Start')
 
 def main():
     #add token
@@ -33,8 +33,8 @@ def main():
     dp(CommandHandler("start",start))
     dp(CommandHandler("covid",covid.covid_result)) 
     dp(InlineQueryHandler(inline_covid))
-    dp(MessageHandler(Filters.text & (~Filters.command),cmd.echo))  
-    dp(MessageHandler(Filters.command, cmd.unknown))                          
+    dp(MessageHandler(Filters.text & (~Filters.command),menu.echo))  
+    dp(MessageHandler(Filters.command, menu.unknown))                          
     updater.start_polling()
     updater.idle()
 
