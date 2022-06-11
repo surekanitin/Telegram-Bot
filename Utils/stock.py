@@ -28,18 +28,37 @@ Change : {round(percentage_change[-1],2)} %
 #stock real-time price
 def stock_result(update:Update,context:CallbackContext):
     context.bot.send_chat_action(update.effective_chat.id, 'typing')
-    symbol=' '.join(map(str, context.args))
-    if symbol == '':
-        context.bot.send_chat_action(update.effective_chat.id,'typing')
-        context.bot.send_message(update.effective_chat.id,text="Please type the stock symbol like \"/stock TCS.NS\".\n")
-    else:
-        context.bot.send_chat_action(update.effective_chat.id,'typing')
-        context.bot.send_message(update.effective_chat.id,text="Displaying Results for "+symbol)
-        try:
-            data=stock(symbol)
+    try:
+        symbol=' '.join(map(str,context.args))
+        if symbol == '':
             context.bot.send_chat_action(update.effective_chat.id,'typing')
-            context.bot.send_message(update.effective_chat.id,data)
-        except:
+            context.bot.send_message(update.effective_chat.id,text="Please type the country name like \"/symbol TCS.NS\".\n")
+        else:
             context.bot.send_chat_action(update.effective_chat.id,'typing')
-            context.bot.send_message(update.effective_chat.id,text="Symbol does not exist!!")
+            context.bot.send_message(update.effective_chat.id,text="Displaying Results for "+symbol)
+            try:
+                ans=stock(symbol)
+                context.bot.send_chat_action(update.effective_chat.id,'typing')
+                context.bot.send_message(update.effective_chat.id,ans)
+            except:
+                context.bot.send_chat_action(update.effective_chat.id,'typing')
+                context.bot.send_message(update.effective_chat.id,text="Stock does not exist!!")
+    except:
+        context.bot.send_chat_action(update.effective_chat.id,'typing')
+        context.bot.send_message(update.effective_chat.id,text="Please type the stock symbol name like \"/stock TCS.NS\".\n")
+
+    # symbol=''.join(map(str, context.args))
+    # if symbol == '':
+    #     context.bot.send_chat_action(update.effective_chat.id,'typing')
+    #     context.bot.send_message(update.effective_chat.id,text="Please type the stock symbol like \"/stock TCS.NS\".\n")
+    # else:
+    #     context.bot.send_chat_action(update.effective_chat.id,'typing')
+    #     context.bot.send_message(update.effective_chat.id,text="Displaying Results for "+symbol)
+    #     try:
+    #         data=stock(symbol)
+    #         context.bot.send_chat_action(update.effective_chat.id,'typing')
+    #         context.bot.send_message(update.effective_chat.id,data)
+    #     except:
+    #         context.bot.send_chat_action(update.effective_chat.id,'typing')
+    #         context.bot.send_message(update.effective_chat.id,text="Symbol does not exist!!")
         

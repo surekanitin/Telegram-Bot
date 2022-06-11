@@ -86,21 +86,27 @@ def covid(country):
 
 def covid_result(update:Update,context:CallbackContext):    
     context.bot.send_chat_action(update.effective_chat.id, 'typing')
-    country=' '.join(map(str,context.args))
-    if country == '':
+    context.bot.send_message(update.effective_chat.id,text="hi")
+    try:
+        country=' '.join(map(str,context.args))
+        if country == '':
+            context.bot.send_chat_action(update.effective_chat.id,'typing')
+            context.bot.send_message(update.effective_chat.id,text="Please type the country name like \"/covid India\".\n")
+        else:
+            context.bot.send_chat_action(update.effective_chat.id,'typing')
+            context.bot.send_message(update.effective_chat.id,text="Displaying Results for "+country)
+            try:
+                ans=covid(country)
+                context.bot.send_chat_action(update.effective_chat.id,'typing')
+                context.bot.send_message(update.effective_chat.id,ans)
+            except:
+                context.bot.send_chat_action(update.effective_chat.id,'typing')
+                context.bot.send_message(update.effective_chat.id,text="Country does not exist!!")
+    except:
         context.bot.send_chat_action(update.effective_chat.id,'typing')
         context.bot.send_message(update.effective_chat.id,text="Please type the country name like \"/covid India\".\n")
-    else:
-        context.bot.send_chat_action(update.effective_chat.id,'typing')
-        context.bot.send_message(update.effective_chat.id,text="Displaying Results for "+country)
-        try:
-            ans=covid(country)
-            context.bot.send_chat_action(update.effective_chat.id,'typing')
-            context.bot.send_message(update.effective_chat.id,ans)
-        except:
-            context.bot.send_chat_action(update.effective_chat.id,'typing')
-            context.bot.send_message(update.effective_chat.id,text="Country does not exist!!")
 
+            
     
 
 

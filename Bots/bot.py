@@ -2,7 +2,7 @@
 import logging,sys,os
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../Utils")
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../Data")
-from telegram.ext import CommandHandler, Filters, MessageHandler, Updater,InlineQueryHandler
+from telegram.ext import CommandHandler, Filters, MessageHandler, Updater,InlineQueryHandler,CallbackQueryHandler
 import menu,covid,stock,weather
 import my_keys
 
@@ -16,6 +16,7 @@ def main():
     updater=Updater(my_keys.pu_project_bot_token,use_context=True)
     dp=updater.dispatcher.add_handler
     dp(CommandHandler("start",menu.start))  
+    dp(CallbackQueryHandler(menu.keyboard_callback))
     dp(InlineQueryHandler(menu.inline_pu))
     dp(CommandHandler('dog',menu.dogImage))
     dp(CommandHandler("covid",covid.covid_result)) 
