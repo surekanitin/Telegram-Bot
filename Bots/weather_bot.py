@@ -17,13 +17,22 @@ def start(update:Update,context:CallbackContext):
 def inline_weather(update:Update,context:CallbackContext):
     options= list()
     city = update.inline_query.query
+    lat=update.inline_query.location.latitude
+    lon=update.inline_query.location.longitude
+    print(lat,lon,city)
     logging.info('Query received: %s', city)
     options.append(
             InlineQueryResultArticle(
                 id=uuid4(),
-                title="Weather",
+                title="Weather By Cords",
                 description="Real Time Weather Updates",
-                input_message_content=InputTextMessageContent(weather.weather(city))))
+                input_message_content=InputTextMessageContent(weather.weather(None,lat,lon))))
+    options.append(
+            InlineQueryResultArticle(
+                id=uuid4(),
+                title="Weather By Place",
+                description="Real Time Weather Updates",
+                input_message_content=InputTextMessageContent(weather.weather(city,None,None))))
     update.inline_query.answer(options,switch_pm_text='Switch to PM mode',switch_pm_parameter='Start')
 
 def main():

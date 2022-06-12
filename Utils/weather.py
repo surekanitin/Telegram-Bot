@@ -1,10 +1,10 @@
+from codecs import latin_1_decode
+from glob import glob
 from pyowm.owm import OWM
 import sys,os
-
-from sqlalchemy import true
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../Data")
 import my_keys
-from telegram import  KeyboardButton, ReplyKeyboardMarkup, ReplyMarkup, Update
+from telegram import  KeyboardButton, ReplyKeyboardMarkup, Update
 from telegram.ext import CallbackContext
 import pytz, dateutil.parser as dp
 
@@ -33,6 +33,8 @@ emojis ={
 owm = OWM(my_keys.owm_api_key)
 
 
+selected=False
+
 def location(city_name):
     mgr1=owm.geocoding_manager()
     location_by_name=mgr1.geocode(city_name,limit=3)
@@ -54,9 +56,13 @@ def local_time(utc,timezone):
     return localtime
     
 
-def weather(city):
-    lat,lon=location(city)
+def weather(city,lat1,lon1):
     mgr = owm.weather_manager()
+    if lat1==None and lon1==None:
+        lat,lon=location(city)
+    else:
+        lon=lon1
+        lat=lat1  
     one_call=mgr.one_call(lat,lon)
     wr=mgr.weather_at_coords(lat,lon).weather
     mgr2=owm.airpollution_manager()
@@ -95,47 +101,70 @@ PM 10 Levels : {air_status.pm10}
 '''
     return result
 
-
-def weather_result(update:Update,context:CallbackContext): 
-    name_button = KeyboardButton(text='Name')
-    location_button = KeyboardButton(text='Location',request_location=True)
-    custom_keyboard = [[name_button, location_button]]
-    keyboard=ReplyKeyboardMarkup(custom_keyboard,resize_keyboard=True,one_time_keyboard=True,input_field_placeholder="Share Location or Type Name")
-    context.bot.send_chat_action(update.effective_chat.id, 'typing')
-    context.bot.send_message(update.effective_chat.id,text="Give either City's Name or Co-Ordiinates",reply_markup=keyboard)
+def keyboard_callback(update:Update,context:CallbackContext):   
+    global selected 
+    user_lat1 = update.message.location.latitude
+    user_lon1 = update.message.location.longitude
+    selected=True
+    context.bot.send_chat_action(update.effective_chat.id,'typing')
     try:
-        city=' '.join(map(str,context.args))
-        if city == '':
-            context.bot.send_chat_action(update.effective_chat.id,'typing')
-            context.bot.send_message(update.effective_chat.id,text="Please type the city name like \"/weather Pondicherry\".\n")
-        else:
-            context.bot.send_chat_action(update.effective_chat.id,'typing')
-            context.bot.send_message(update.effective_chat.id,text="Displaying Results for "+city)
-            try:
-                ans=weather(city)
-                context.bot.send_chat_action(update.effective_chat.id,'typing')
-                context.bot.send_message(update.effective_chat.id,ans)
-            except:
-                context.bot.send_chat_action(update.effective_chat.id,'typing')
-                context.bot.send_message(update.effective_chat.id,text="City does not exist!!")
+        ans=weather(None,user_lat1,user_lon1)
+        selected=False
+        user_lat1=None
+        user_lon1=None
+        context.bot.send_chat_action(update.effective_chat.id,'typing')
+        context.bot.send_message(update.effective_chat.id,text="Displaying Results")
+        context.bot.send_message(update.effective_chat.id,ans)
     except:
         context.bot.send_chat_action(update.effective_chat.id,'typing')
-        context.bot.send_message(update.effective_chat.id,text="Please type the city name like \"/weather Pondicherry\".\n")
+        context.bot.send_message(update.effective_chat.id,text="City does not exist!!")
+
 
     
-    
-    # city=' '.join(map(str,context.args)) 
-    # if city == '':
-        # context.bot.send_chat_action(update.effective_chat.id,'typing')
-        # context.bot.send_message(update.effective_chat.id,text="Please type the city name like \"/weather Pondicherry\".\n")
-    # else:
-        # context.bot.send_chat_action(update.effective_chat.id,'typing')
-        # context.bot.send_message(update.effective_chat.id,text="Displaying Results for "+city)
-        # try:
-            # result_weather=weather(city)
-            # context.bot.send_chat_action(update.effective_chat.id,'typing')
-            # context.bot.send_message(update.effective_chat.id,result_weather)
-        # except:
-            # context.bot.send_chat_action(update.effective_chat.id,'typing')
-            # context.bot.send_message(update.effective_chat.id,text="City does not exist!!")
-#  
+def weather_result(update:Update,context:CallbackContext): 
+    location_button = KeyboardButton(text='Location',request_location=True)
+    custom_keyboard = [[location_button]]
+    keyboard=ReplyKeyboardMarkup(custom_keyboard,resize_keyboard=True,one_time_keyboard=True,input_field_placeholder="Share Location")
+    context.bot.send_chat_action(update.effective_chat.id, 'typing')
+    if update._effective_chat.type=="private":
+        context.bot.send_message(update.effective_chat.id,text="Give City Name or Co-Ordinates",reply_markup=keyboard)
+        try:
+            if selected==False:
+                city=' '.join(map(str,context.args))
+                if city == '':
+                    context.bot.send_chat_action(update.effective_chat.id,'typing')
+                    context.bot.send_message(update.effective_chat.id,text="Please type the city name like \"/weather Pondicherry\".\n")
+                else:
+                    context.bot.send_chat_action(update.effective_chat.id,'typing')
+                    try:
+                        ans=weather(city,None,None)
+                        context.bot.send_chat_action(update.effective_chat.id,'typing')
+                        context.bot.send_message(update.effective_chat.id,text="Displaying Results for "+city)
+                        context.bot.send_message(update.effective_chat.id,ans)
+                    except:
+                        context.bot.send_chat_action(update.effective_chat.id,'typing')
+                        context.bot.send_message(update.effective_chat.id,text="City does not exist!!")
+        except:
+                context.bot.send_chat_action(update.effective_chat.id,'typing')
+                context.bot.send_message(update.effective_chat.id,text="Please type the city name like \"/weather Pondicherry\".\n")
+            
+    else:
+        try:
+            if selected==False:
+                city=' '.join(map(str,context.args))
+                if city == '':
+                    context.bot.send_chat_action(update.effective_chat.id,'typing')
+                    context.bot.send_message(update.effective_chat.id,text="Please type the city name like \"/weather Pondicherry\".\n")
+                else:
+                    context.bot.send_chat_action(update.effective_chat.id,'typing')
+                    context.bot.send_message(update.effective_chat.id,text="Displaying Results for "+city)
+                    try:
+                        ans=weather(city,None,None)
+                        context.bot.send_chat_action(update.effective_chat.id,'typing')
+                        context.bot.send_message(update.effective_chat.id,ans)
+                    except:
+                        context.bot.send_chat_action(update.effective_chat.id,'typing')
+                        context.bot.send_message(update.effective_chat.id,text="City does not exist!!")
+        except:
+                context.bot.send_chat_action(update.effective_chat.id,'typing')
+                context.bot.send_message(update.effective_chat.id,text="Please type the city name like \"/weather Pondicherry\".\n")

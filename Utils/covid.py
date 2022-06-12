@@ -6,8 +6,12 @@ import pandas as pd
 from telegram import Update
 from telegram.ext import CallbackContext
 
+# OFFSET = 127462 - ord('A')
+# def flag(code):
+#     return chr(ord(code[0]) + OFFSET) + chr(ord(code[1]) + OFFSET)
+
 URL='https://www.worldometers.info/coronavirus/#countries'
-# page = requests.get(URL.format(offset='0'))
+
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36'
 }
@@ -36,7 +40,7 @@ with open ('/home/nitin/Desktop/PROJECT/Telegram-Bot/Data/countries_covid_data.c
         
         getDetails(URL.format())
 
-
+flag_code = pd.read_csv("/home/nitin/Desktop/PROJECT/Telegram-Bot/Data/flag_code.csv")
 covid_data=pd.read_csv("/home/nitin/Desktop/PROJECT/Telegram-Bot/Data/countries_covid_data.csv")
 country_name = pd.read_csv("/home/nitin/Desktop/PROJECT/Telegram-Bot/Data/countries.csv")
 countries=country_name['Country'].tolist()
@@ -61,6 +65,7 @@ def check_country(country):
 def covid(country):
     detail=[]
     data=[]
+    # emoji=[]
     if country in ('usa','uae','uk','Uk','Usa','Uae','USA','UK','UAE'):
         country=country.upper()
     else:
@@ -71,7 +76,7 @@ def covid(country):
         for col in data.iloc[-1]:
             detail.append(col)
         case=f'''
-📌Country :{detail[0]}
+📌Country :{detail[0]} 
 📌Total Cases :{detail[1]}
 📌New Cases :{detail[2]}
 📌Total Deaths :{detail[3]}
@@ -86,7 +91,6 @@ def covid(country):
 
 def covid_result(update:Update,context:CallbackContext):    
     context.bot.send_chat_action(update.effective_chat.id, 'typing')
-    context.bot.send_message(update.effective_chat.id,text="hi")
     try:
         country=' '.join(map(str,context.args))
         if country == '':
@@ -94,10 +98,10 @@ def covid_result(update:Update,context:CallbackContext):
             context.bot.send_message(update.effective_chat.id,text="Please type the country name like \"/covid India\".\n")
         else:
             context.bot.send_chat_action(update.effective_chat.id,'typing')
-            context.bot.send_message(update.effective_chat.id,text="Displaying Results for "+country)
             try:
                 ans=covid(country)
                 context.bot.send_chat_action(update.effective_chat.id,'typing')
+                context.bot.send_message(update.effective_chat.id,text="Displaying Results for "+country)
                 context.bot.send_message(update.effective_chat.id,ans)
             except:
                 context.bot.send_chat_action(update.effective_chat.id,'typing')

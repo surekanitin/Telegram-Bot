@@ -1,0 +1,8 @@
+from sympy import re
+
+
+owm_api_key = "c1e8bfbc1e802cd9ef2e31f0309d3499"
+pu_project_bot_token='5370403379:AAGB13gSGBvGKMQk7o_CUwMWxUKpOUxtIUo'
+realtimecovidbot_token='5331689425:AAEcgX3Pa3U-M0pMrncYYfcN_JoRDp9zOsk'
+realtimestockbot_token='5576691146:AAG-DCKgykM8xhZsaHwy8Grtx_8JdahZSGI'
+weatherrealtimebot_token='5410314484:AAHGXOIbekBK2R7L3QQlD78PDE1srkYXDj8'

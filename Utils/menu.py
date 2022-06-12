@@ -20,7 +20,7 @@ def start(update:Update,context:CallbackContext):
     #context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot,please talk to me!,\nHow to use the commands?\n/dog to get random images of dog\n/covid \"India\" to get the covid Updates,\n/stock \"RELIANCE.NS\" to get real-time stock price.\n/weather \"Pondicherry\" to get real-time weather updates.",reply_markup=kb) 
     update.message.reply_text(text="I'm a bot,please talk to me!,\nHow to use the commands?\n/dog to get random images of dog\n/covid \"India\" to get the covid Updates,\n/stock \"RELIANCE.NS\" to get real-time stock price.\n/weather \"Pondicherry\" to get real-time weather updates.", reply_markup=kb)
 
-def keyboard_callback(update:Update,context:CallbackContext):    
+def Inlinekeyboard_callback(update:Update,context:CallbackContext):    
     data = update.callback_query.data
     if data == '1':
         start(update,context)
@@ -62,7 +62,7 @@ def inline_pu(update:Update,context:CallbackContext):
     @realtimecovidbot - For Inline Covid Updates
     @realtimestockbot - For Inline Stock Updates
     @weatherrealtimebot - For Inline Weather Updates'''
-    user_input = update.inline_query.query
+    user_input=update.inline_query.query
     logging.info('Query received: %s', user_input)
     options.append(
         InlineQueryResultArticle(
