@@ -5,11 +5,7 @@ from difflib import get_close_matches
 import pandas as pd
 from telegram import Update
 from telegram.ext import CallbackContext
-
-# OFFSET = 127462 - ord('A')
-# def flag(code):
-#     return chr(ord(code[0]) + OFFSET) + chr(ord(code[1]) + OFFSET)
-
+import emoji
 URL='https://www.worldometers.info/coronavirus/#countries'
 
 HEADERS = {
@@ -65,7 +61,7 @@ def check_country(country):
 def covid(country):
     detail=[]
     data=[]
-    # emoji=[]
+
     if country in ('usa','uae','uk','Uk','Usa','Uae','USA','UK','UAE'):
         country=country.upper()
     else:
@@ -75,8 +71,9 @@ def covid(country):
         data=covid_data.loc[covid_data['Country']==country]
         for col in data.iloc[-1]:
             detail.append(col)
+        name=emoji.emojize(':'+detail[0]+':')
         case=f'''
-📌Country :{detail[0]} 
+📌Country :{detail[0]} {name}
 📌Total Cases :{detail[1]}
 📌New Cases :{detail[2]}
 📌Total Deaths :{detail[3]}
